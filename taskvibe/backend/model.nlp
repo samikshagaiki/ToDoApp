@@ -1,0 +1,738 @@
+{
+  "settings": {
+    "languages": [
+      "en"
+    ],
+    "tag": "nlp",
+    "threshold": 0.5,
+    "autoLoad": true,
+    "autoSave": true,
+    "modelFileName": "model.nlp",
+    "executeActionsBeforeAnswers": false,
+    "calculateSentiment": true
+  },
+  "nluManager": {
+    "settings": {
+      "tag": "nlu-manager"
+    },
+    "locales": [
+      "en"
+    ],
+    "languageNames": {},
+    "domainManagers": {
+      "en": {
+        "settings": {
+          "locale": "en",
+          "trainByDomain": false,
+          "tag": "domain-manager-en",
+          "nluByDomain": {
+            "default": {
+              "className": "NeuralNlu",
+              "settings": {}
+            }
+          },
+          "useStemDict": true
+        },
+        "stemDict": {
+          "hello": {
+            "intent": "greetings",
+            "domain": "default"
+          },
+          "hi": {
+            "intent": "greetings",
+            "domain": "default"
+          },
+          "hey": {
+            "intent": "greetings",
+            "domain": "default"
+          },
+          "good,morn": {
+            "intent": "greetings",
+            "domain": "default"
+          },
+          "afternoon,good": {
+            "intent": "greetings",
+            "domain": "default"
+          },
+          "even,good": {
+            "intent": "greetings",
+            "domain": "default"
+          },
+          "creat,task": {
+            "intent": "task.create",
+            "domain": "default"
+          },
+          "add,task": {
+            "intent": "task.create",
+            "domain": "default"
+          },
+          "new,task": {
+            "intent": "task.create",
+            "domain": "default"
+          },
+          "make,task": {
+            "intent": "task.create",
+            "domain": "default"
+          },
+          "show,task": {
+            "intent": "task.list",
+            "domain": "default"
+          },
+          "list,task": {
+            "intent": "task.list",
+            "domain": "default"
+          },
+          "my,task": {
+            "intent": "task.list",
+            "domain": "default"
+          },
+          "task,view": {
+            "intent": "task.list",
+            "domain": "default"
+          },
+          "help": {
+            "intent": "help",
+            "domain": "default"
+          },
+          "can,do,what,you": {
+            "intent": "help",
+            "domain": "default"
+          },
+          "command": {
+            "intent": "help",
+            "domain": "default"
+          },
+          "bye": {
+            "intent": "goodbye",
+            "domain": "default"
+          },
+          "goodby": {
+            "intent": "goodbye",
+            "domain": "default"
+          },
+          "later,see,you": {
+            "intent": "goodbye",
+            "domain": "default"
+          }
+        },
+        "intentDict": {
+          "greetings": "default",
+          "task.create": "default",
+          "task.list": "default",
+          "help": "default",
+          "goodbye": "default"
+        },
+        "sentences": [
+          {
+            "domain": "default",
+            "utterance": "hello",
+            "intent": "greetings"
+          },
+          {
+            "domain": "default",
+            "utterance": "hi",
+            "intent": "greetings"
+          },
+          {
+            "domain": "default",
+            "utterance": "hey",
+            "intent": "greetings"
+          },
+          {
+            "domain": "default",
+            "utterance": "good morning",
+            "intent": "greetings"
+          },
+          {
+            "domain": "default",
+            "utterance": "good afternoon",
+            "intent": "greetings"
+          },
+          {
+            "domain": "default",
+            "utterance": "good evening",
+            "intent": "greetings"
+          },
+          {
+            "domain": "default",
+            "utterance": "create task",
+            "intent": "task.create"
+          },
+          {
+            "domain": "default",
+            "utterance": "add task",
+            "intent": "task.create"
+          },
+          {
+            "domain": "default",
+            "utterance": "new task",
+            "intent": "task.create"
+          },
+          {
+            "domain": "default",
+            "utterance": "make task",
+            "intent": "task.create"
+          },
+          {
+            "domain": "default",
+            "utterance": "show tasks",
+            "intent": "task.list"
+          },
+          {
+            "domain": "default",
+            "utterance": "list tasks",
+            "intent": "task.list"
+          },
+          {
+            "domain": "default",
+            "utterance": "my tasks",
+            "intent": "task.list"
+          },
+          {
+            "domain": "default",
+            "utterance": "view tasks",
+            "intent": "task.list"
+          },
+          {
+            "domain": "default",
+            "utterance": "help",
+            "intent": "help"
+          },
+          {
+            "domain": "default",
+            "utterance": "what can you do",
+            "intent": "help"
+          },
+          {
+            "domain": "default",
+            "utterance": "commands",
+            "intent": "help"
+          },
+          {
+            "domain": "default",
+            "utterance": "bye",
+            "intent": "goodbye"
+          },
+          {
+            "domain": "default",
+            "utterance": "goodbye",
+            "intent": "goodbye"
+          },
+          {
+            "domain": "default",
+            "utterance": "see you later",
+            "intent": "goodbye"
+          }
+        ],
+        "domains": {
+          "master_domain": {
+            "settings": {
+              "locale": "en",
+              "tag": "nlu-en",
+              "keepStopwords": true,
+              "nonefeatureValue": 1,
+              "nonedeltaMultiplier": 1.2,
+              "spellCheck": false,
+              "spellCheckDistance": 1,
+              "filterZeros": true,
+              "log": true
+            },
+            "features": {
+              "hello": 1,
+              "hi": 1,
+              "hey": 1,
+              "good": 1,
+              "morn": 1,
+              "afternoon": 1,
+              "even": 1,
+              "creat": 1,
+              "task": 1,
+              "add": 1,
+              "new": 1,
+              "make": 1,
+              "show": 1,
+              "list": 1,
+              "my": 1,
+              "view": 1,
+              "help": 1,
+              "what": 1,
+              "can": 1,
+              "you": 1,
+              "do": 1,
+              "command": 1,
+              "bye": 1,
+              "goodby": 1,
+              "see": 1,
+              "later": 1
+            },
+            "intents": {
+              "greetings": 1,
+              "task.create": 1,
+              "task.list": 1,
+              "help": 1,
+              "goodbye": 1
+            },
+            "intentFeatures": {
+              "greetings": {
+                "hello": 1,
+                "hi": 1,
+                "hey": 1,
+                "good": 1,
+                "morn": 1,
+                "afternoon": 1,
+                "even": 1
+              },
+              "task.create": {
+                "creat": 1,
+                "task": 1,
+                "add": 1,
+                "new": 1,
+                "make": 1
+              },
+              "task.list": {
+                "show": 1,
+                "task": 1,
+                "list": 1,
+                "my": 1,
+                "view": 1
+              },
+              "help": {
+                "help": 1,
+                "what": 1,
+                "can": 1,
+                "you": 1,
+                "do": 1,
+                "command": 1
+              },
+              "goodbye": {
+                "bye": 1,
+                "goodby": 1,
+                "see": 1,
+                "you": 1,
+                "later": 1
+              }
+            },
+            "featuresToIntent": {
+              "hello": [
+                "greetings"
+              ],
+              "hi": [
+                "greetings"
+              ],
+              "hey": [
+                "greetings"
+              ],
+              "good": [
+                "greetings"
+              ],
+              "morn": [
+                "greetings"
+              ],
+              "afternoon": [
+                "greetings"
+              ],
+              "even": [
+                "greetings"
+              ],
+              "creat": [
+                "task.create"
+              ],
+              "task": [
+                "task.create",
+                "task.list"
+              ],
+              "add": [
+                "task.create"
+              ],
+              "new": [
+                "task.create"
+              ],
+              "make": [
+                "task.create"
+              ],
+              "show": [
+                "task.list"
+              ],
+              "list": [
+                "task.list"
+              ],
+              "my": [
+                "task.list"
+              ],
+              "view": [
+                "task.list"
+              ],
+              "help": [
+                "help"
+              ],
+              "what": [
+                "help"
+              ],
+              "can": [
+                "help"
+              ],
+              "you": [
+                "help",
+                "goodbye"
+              ],
+              "do": [
+                "help"
+              ],
+              "command": [
+                "help"
+              ],
+              "bye": [
+                "goodbye"
+              ],
+              "goodby": [
+                "goodbye"
+              ],
+              "see": [
+                "goodbye"
+              ],
+              "later": [
+                "goodbye"
+              ]
+            },
+            "neuralNetwork": {
+              "settings": {
+                "locale": "en",
+                "tag": "nlu-en",
+                "keepStopwords": true,
+                "nonefeatureValue": 1,
+                "nonedeltaMultiplier": 1.2,
+                "spellCheck": false,
+                "spellCheckDistance": 1,
+                "filterZeros": true,
+                "log": true
+              },
+              "features": [
+                "hello",
+                "hi",
+                "hey",
+                "good",
+                "morn",
+                "afternoon",
+                "even",
+                "creat",
+                "task",
+                "add",
+                "new",
+                "make",
+                "show",
+                "list",
+                "my",
+                "view",
+                "help",
+                "what",
+                "can",
+                "you",
+                "do",
+                "command",
+                "bye",
+                "goodby",
+                "see",
+                "later"
+              ],
+              "intents": [
+                "greetings",
+                "task.create",
+                "task.list",
+                "help",
+                "goodbye"
+              ],
+              "perceptrons": [
+                [
+                  9.315488815307617,
+                  9.309621810913086,
+                  9.272747993469238,
+                  7.101499557495117,
+                  2.3769140243530273,
+                  2.367483139038086,
+                  2.3566927909851074,
+                  -0.6919776797294617,
+                  -4.474399566650391,
+                  -0.6537392735481262,
+                  -0.5933540463447571,
+                  -0.5497475862503052,
+                  -0.5138476490974426,
+                  -0.4789845645427704,
+                  -0.45014679431915283,
+                  -0.42860832810401917,
+                  -4.7064714431762695,
+                  -0.9666369557380676,
+                  -0.9666369557380676,
+                  -2.2633724212646484,
+                  -0.9666369557380676,
+                  -4.6824421882629395,
+                  -4.658905506134033,
+                  -4.63449764251709,
+                  -1.2613590955734253,
+                  -1.2613590955734253,
+                  4.7904501738442
+                ],
+                [
+                  -0.5477557182312012,
+                  -0.5457661151885986,
+                  -0.5436708927154541,
+                  -0.4653257131576538,
+                  -0.15667995810508728,
+                  -0.14070932567119598,
+                  -0.13280199468135834,
+                  7.8036065101623535,
+                  5.834875106811523,
+                  7.804500579833984,
+                  7.747526168823242,
+                  7.670731067657471,
+                  -6.3584113121032715,
+                  -6.338528156280518,
+                  -6.2894463539123535,
+                  -6.221404552459717,
+                  -0.5552110075950623,
+                  -0.17827332019805908,
+                  -0.17827332019805908,
+                  -0.3777618706226349,
+                  -0.17827332019805908,
+                  -0.5535784959793091,
+                  -0.5520873665809631,
+                  -0.5504890084266663,
+                  -0.16682663559913635,
+                  -0.16682663559913635,
+                  0.5558244428796305
+                ],
+                [
+                  -0.5624178051948547,
+                  -0.5482485890388489,
+                  -0.5343553423881531,
+                  -0.7256055474281311,
+                  -0.23051054775714874,
+                  -0.20665128529071808,
+                  -0.2009325921535492,
+                  -6.317521572113037,
+                  6.09484338760376,
+                  -6.294416427612305,
+                  -6.23948335647583,
+                  -6.164239406585693,
+                  7.828953266143799,
+                  7.829962730407715,
+                  7.772613525390625,
+                  7.695187568664551,
+                  -0.6327162384986877,
+                  -0.2925741970539093,
+                  -0.2925741970539093,
+                  -0.5998830199241638,
+                  -0.2925741970539093,
+                  -0.6056755185127258,
+                  -0.5961273908615112,
+                  -0.5800241827964783,
+                  -0.24879688024520874,
+                  -0.24879688024520874,
+                  0.3095048532970737
+                ],
+                [
+                  -2.713113307952881,
+                  -2.6973206996917725,
+                  -2.6810433864593506,
+                  -2.096458673477173,
+                  -0.7050944566726685,
+                  -0.6984165906906128,
+                  -0.6922094821929932,
+                  -0.34799185395240784,
+                  -2.4971823692321777,
+                  -0.33101487159729004,
+                  -0.317451536655426,
+                  -0.3076048195362091,
+                  -0.3014526069164276,
+                  -0.29870879650115967,
+                  -0.2957831621170044,
+                  -0.2925388216972351,
+                  11.251394271850586,
+                  3.3870561122894287,
+                  3.3870561122894287,
+                  1.3184623718261719,
+                  3.3870561122894287,
+                  11.230761528015137,
+                  -2.7535340785980225,
+                  -2.7402234077453613,
+                  -2.0684168338775635,
+                  -2.0684168338775635,
+                  2.8112752707224646
+                ],
+                [
+                  -2.8620259761810303,
+                  -2.847283363342285,
+                  -2.831988573074341,
+                  -2.2001001834869385,
+                  -0.7509916424751282,
+                  -0.7273979187011719,
+                  -0.7202579379081726,
+                  -0.3835775554180145,
+                  -2.6270911693573,
+                  -0.3632446825504303,
+                  -0.34192678332328796,
+                  -0.32366135716438293,
+                  -0.31046783924102783,
+                  -0.3006196618080139,
+                  -0.29560667276382446,
+                  -0.29313674569129944,
+                  -2.8054580688476562,
+                  -1.8261648416519165,
+                  -1.8261648416519165,
+                  2.565152406692505,
+                  -1.8261648416519165,
+                  -2.783780097961426,
+                  11.137449264526367,
+                  11.122203826904297,
+                  4.391371250152588,
+                  4.391371250152588,
+                  2.932497290269195
+                ]
+              ]
+            }
+          }
+        }
+      }
+    },
+    "intentDomains": {},
+    "extraSentences": [
+      [
+        "en",
+        "hello"
+      ],
+      [
+        "en",
+        "hi"
+      ],
+      [
+        "en",
+        "hey"
+      ],
+      [
+        "en",
+        "good morning"
+      ],
+      [
+        "en",
+        "good afternoon"
+      ],
+      [
+        "en",
+        "good evening"
+      ],
+      [
+        "en",
+        "create task"
+      ],
+      [
+        "en",
+        "add task"
+      ],
+      [
+        "en",
+        "new task"
+      ],
+      [
+        "en",
+        "make task"
+      ],
+      [
+        "en",
+        "show tasks"
+      ],
+      [
+        "en",
+        "list tasks"
+      ],
+      [
+        "en",
+        "my tasks"
+      ],
+      [
+        "en",
+        "view tasks"
+      ],
+      [
+        "en",
+        "help"
+      ],
+      [
+        "en",
+        "what can you do"
+      ],
+      [
+        "en",
+        "commands"
+      ],
+      [
+        "en",
+        "bye"
+      ],
+      [
+        "en",
+        "goodbye"
+      ],
+      [
+        "en",
+        "see you later"
+      ]
+    ]
+  },
+  "ner": {
+    "settings": {
+      "tag": "ner",
+      "entityPreffix": "%",
+      "entitySuffix": "%"
+    },
+    "rules": {}
+  },
+  "nlgManager": {
+    "settings": {
+      "tag": "nlg-manager"
+    },
+    "responses": {
+      "en": {
+        "greetings": [
+          {
+            "answer": "Hello! How can I help you with your tasks today?"
+          },
+          {
+            "answer": "Hi there! What can I do for you?"
+          },
+          {
+            "answer": "Hey! Ready to be productive?"
+          }
+        ],
+        "task.create": [
+          {
+            "answer": "I can help you create a task! What would you like to add to your todo list?"
+          }
+        ],
+        "task.list": [
+          {
+            "answer": "You can view your tasks in the main app. Would you like me to help you with anything else?"
+          }
+        ],
+        "help": [
+          {
+            "answer": "I can help you with: creating tasks, viewing tasks, and general questions about your todo app!"
+          }
+        ],
+        "goodbye": [
+          {
+            "answer": "Goodbye! Have a productive day!"
+          },
+          {
+            "answer": "See you later! Don't forget to complete your tasks!"
+          }
+        ]
+      }
+    }
+  },
+  "actionManager": {
+    "settings": {
+      "tag": "action-manager"
+    },
+    "actions": {}
+  },
+  "slotManager": {}
+}
