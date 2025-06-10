@@ -1,8 +1,9 @@
+// components/Chatbot.js
 import { useState } from 'react';
-// import { motion } from 'framer-motion';
 import axios from 'axios';
-import { Box, TextField, Button, Typography, IconButton, Drawer } from '@mui/material';
+import { Box, TextField, Button, Typography, IconButton, Drawer, Paper } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
+import CloseIcon from '@mui/icons-material/Close';
 
 const Chatbot = ({ onAddTask, user }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,17 +12,23 @@ const Chatbot = ({ onAddTask, user }) => {
 
   const handleSend = async () => {
     if (!input.trim()) return;
-    setMessages([...messages, { sender: 'user', text: input }]);
+    
+    const userMessage = { sender: 'user', text: input };
+    setMessages(prev => [...prev, userMessage]);
+    
     try {
       const res = await axios.post('http://localhost:5000/api/chatbot', { message: input });
-      setMessages([...messages, { sender: 'user', text: input }, { sender: 'bot', text: res.data.reply }]);
+      const botMessage = { sender: 'bot', text: res.data.reply };
+      setMessages(prev => [...prev, botMessage]);
+      
       if (res.data.reply.includes('task title')) {
         const title = input.replace(/add task|create task|new task/i, '').trim();
         if (title) onAddTask({ title, description: '', priority: 'medium' });
       }
     } catch (err) {
-      setMessages([...messages, { sender: 'user', text: input }, { sender: 'bot', text: 'Oops, something went wrong!' }]);
-        console.error('Error sending message:', err);
+      const errorMessage = { sender: 'bot', text: 'Oops, something went wrong!' };
+      setMessages(prev => [...prev, errorMessage]);
+      console.error('Error sending message:', err);
     }
     setInput('');
   };
@@ -29,66 +36,73 @@ const Chatbot = ({ onAddTask, user }) => {
   if (!user) return null;
 
   return (
-    <motion.div
-      sx={{ position: 'fixed', bottom: 16, right: 16, zIndex: 1300 }}
-      initial={{ scale: 0 }}
-      animate={{ scale: isOpen ? 1 : 0.8 }}
-      transition={{ type: 'spring', stiffness: 100 }}
-    >
+    <>
       {!isOpen ? (
-        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-          <IconButton
-            color="secondary"
-            onClick={() => setIsOpen(true)}
-            sx={{ width: 64, height: 64, bgcolor: 'secondary.main' }}
-          >
-            <ChatIcon sx={{ color: 'white', fontSize: 32 }} />
-          </IconButton>
-        </motion.div>
+        <IconButton
+          onClick={() => setIsOpen(true)}
+          sx={{ 
+            position: 'fixed', 
+            bottom: 20, 
+            right: 20, 
+            width: 64, 
+            height: 64, 
+            bgcolor: 'secondary.main',
+            '&:hover': { bgcolor: 'secondary.dark' }
+          }}
+        >
+          <ChatIcon sx={{ color: 'white' }} />
+        </IconButton>
       ) : (
-        <Drawer anchor="bottom" open={isOpen} onClose={() => setIsOpen(false)}>
-          <Box sx={{ width: 320, height: 400, p: 2, bgcolor: 'rgba(255, 255, 255, 0.2)', backdropFilter: 'blur(10px)' }}>
-            <Box sx={{ flex: 1, overflowY: 'auto', mb: 2 }}>
+        <Drawer anchor="right" open={isOpen} onClose={() => setIsOpen(false)}>
+          <Box sx={{ width: 400, height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <Box sx={{ p: 2, bgcolor: 'primary.main', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Typography variant="h6">TaskVibe Assistant</Typography>
+              <IconButton onClick={() => setIsOpen(false)} sx={{ color: 'white' }}>
+                <CloseIcon />
+              </IconButton>
+            </Box>
+            
+            <Box sx={{ flex: 1, overflow: 'auto', p: 2 }}>
               {messages.map((msg, index) => (
-                <Box
+                <Paper
                   key={index}
-                  sx={{ display: 'flex', justifyContent: msg.sender === 'user' ? 'flex-end' : 'flex-start', mb: 1 }}
+                  sx={{
+                    p: 2,
+                    mb: 2,
+                    bgcolor: msg.sender === 'user' ? 'primary.light' : 'grey.100',
+                    ml: msg.sender === 'user' ? 4 : 0,
+                    mr: msg.sender === 'bot' ? 4 : 0,
+                  }}
                 >
-                  <Typography
-                    sx={{
-                      p: 1,
-                      borderRadius: 2,
-                      bgcolor: msg.sender === 'user' ? 'secondary.main' : 'grey.200',
-                      color: msg.sender === 'user' ? 'white' : 'text.primary',
-                      maxWidth: '70%',
-                    }}
-                  >
-                    {msg.text}
-                  </Typography>
-                </Box>
+                  <Typography variant="body2">{msg.text}</Typography>
+                </Paper>
               ))}
             </Box>
-            <Box sx={{ display: 'flex', gap: 1 }}>
-              <TextField
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Type a message..."
-                fullWidth
-                variant="outlined"
-                onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                sx={{ bgcolor: 'white', borderRadius: 1 }}
-              />
-              <Button variant="contained" color="secondary" onClick={handleSend}>
-                Send
-              </Button>
+            
+            <Box sx={{ p: 2, borderTop: 1, borderColor: 'divider' }}>
+              <Box sx={{ display: 'flex', gap: 1 }}>
+                <TextField
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Type a message..."
+                  fullWidth
+                  variant="outlined"
+                  size="small"
+                  onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+                />
+                <Button
+                  onClick={handleSend}
+                  variant="contained"
+                  color="primary"
+                >
+                  Send
+                </Button>
+              </Box>
             </Box>
-            <Button sx={{ mt: 1, color: 'white' }} onClick={() => setIsOpen(false)}>
-              Close
-            </Button>
           </Box>
         </Drawer>
       )}
-    </motion.div>
+    </>
   );
 };
 

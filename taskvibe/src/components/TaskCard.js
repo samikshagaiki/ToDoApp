@@ -1,9 +1,8 @@
-// import { motion } from 'framer-motion';
-import Confetti from 'react-confetti';
 import { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Card, CardContent, Typography, Button, TextField, MenuItem, Select, Box } from '@mui/material';
+import Confetti from 'react-confetti'; // Import Confetti
 
 const TaskCard = ({ task, onUpdate, onDelete, onEdit }) => {
   const [showConfetti, setShowConfetti] = useState(false);
@@ -40,18 +39,18 @@ const TaskCard = ({ task, onUpdate, onDelete, onEdit }) => {
   };
 
   return (
-    <motion.div
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ type: 'spring', stiffness: 100 }}
-      whileHover={{ scale: 1.05 }}
-    >
-      <Card sx={{ mb: 2 }}>
-        {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      {/* Render Confetti when showConfetti is true */}
+      {showConfetti && (
+        <Confetti
+          width={window.innerWidth}
+          height={window.innerHeight}
+          recycle={false}
+          numberOfPieces={200}
+          gravity={0.1}
+        />
+      )}
+      <Card sx={{ mb: 2, opacity: task.status === 'done' ? 0.7 : 1 }}>
         <CardContent>
           {isEditing ? (
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -63,7 +62,7 @@ const TaskCard = ({ task, onUpdate, onDelete, onEdit }) => {
               />
               <TextField
                 label="Description"
-                value={editTask.description}
+                value={editTask.description || ''}
                 onChange={(e) => setEditTask({ ...editTask, description: e.target.value })}
                 multiline
                 rows={3}
@@ -79,65 +78,53 @@ const TaskCard = ({ task, onUpdate, onDelete, onEdit }) => {
                 <MenuItem value="high">High</MenuItem>
               </Select>
               <Box sx={{ display: 'flex', gap: 1 }}>
-                <motion.button
-                  whileTap={{ scale: 0.9 }}
-                  component={Button}
-                  variant="contained"
-                  color="success"
-                  onClick={handleSave}
-                >
+                <Button variant="contained" color="success" onClick={handleSave}>
                   Save
-                </motion.button>
-                <motion.button
-                  whileTap={{ scale: 0.9 }}
-                  component={Button}
-                  variant="outlined"
-                  onClick={() => setIsEditing(false)}
-                >
+                </Button>
+                <Button variant="outlined" onClick={() => setIsEditing(false)}>
                   Cancel
-                </motion.button>
+                </Button>
               </Box>
             </Box>
           ) : (
             <>
-              <Typography variant="h6" sx={{ color: 'white' }}>{task.title}</Typography>
-              <Typography variant="body2" sx={{ color: 'white', opacity: 0.8 }}>{task.description}</Typography>
-              <Typography variant="body2" sx={{ color: 'white', opacity: 0.8 }}>Priority: {task.priority}</Typography>
-              <Typography variant="body2" sx={{ color: 'white', opacity: 0.8 }}>Status: {task.status}</Typography>
-              <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
-                <motion.button
-                  whileTap={{ scale: 0.9 }}
-                  component={Button}
+              <Typography variant="h6" sx={{ color: 'white' }}>
+                {task.title}
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'white', opacity: 0.8 }}>
+                {task.description}
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'white', opacity: 0.8 }}>
+                Priority: {task.priority}
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'white', opacity: 0.8 }}>
+                Status: {task.status || 'pending'}
+              </Typography>
+              <Box sx={{ display: 'flex', gap: 1, mt: 2, flexWrap: 'wrap' }}>
+                <Button
                   variant="contained"
                   color="primary"
                   onClick={() => handleStatusChange('done')}
+                  disabled={task.status === 'done'}
                 >
                   Complete
-                </motion.button>
-                <motion.button
-                  whileTap={{ scale: 0.9 }}
-                  component={Button}
-                  variant="contained"
-                  color="warning"
-                  onClick={handleEdit}
-                >
+                </Button>
+                <Button variant="contained" color="warning" onClick={handleEdit}>
                   Edit
-                </motion.button>
-                <motion.button
-                  whileTap={{ scale: 0.9 }}
-                  component={Button}
+                </Button>
+                <Button
                   variant="contained"
                   color="error"
                   onClick={() => onDelete(task._id)}
                 >
                   Delete
-                </motion.button>
+                </Button>
               </Box>
             </>
           )}
         </CardContent>
       </Card>
-    </motion.div>
+    </div>
   );
 };
 

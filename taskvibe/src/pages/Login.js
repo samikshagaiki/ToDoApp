@@ -1,3 +1,4 @@
+// pages/Login.js
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -22,54 +23,50 @@ const Login = ({ setUser }) => {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <Card sx={{ maxWidth: 400, width: '100%', p: 2 }}>
-          <CardContent>
-            <Typography variant="h5" sx={{ mb: 2, color: 'white' }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh', p: 4 }}>
+      <Card sx={{ maxWidth: 400, width: '100%' }}>
+        <CardContent>
+          <form onSubmit={handleSubmit}>
+            <Typography variant="h4" sx={{ mb: 3, textAlign: 'center', color: 'white' }}>
               Login
             </Typography>
             {error && (
-              <Typography color="error" sx={{ mb: 2 }}>
+              <Typography color="error" sx={{ mb: 2, textAlign: 'center' }}>
                 {error}
               </Typography>
             )}
-            <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <TextField
-                label="Email"
-                type="email"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                fullWidth
-                variant="outlined"
-              />
-              <TextField
-                label="Password"
-                type="password"
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                fullWidth
-                variant="outlined"
-              />
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                component={Button}
-                type="submit"
-                variant="contained"
-                color="secondary"
-              >
-                Login
-              </motion.button>
-            </Box>
-          </CardContent>
-        </Card>
-      </Box>
-    </motion.div>
+            <TextField
+              label="Email"
+              type="email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              fullWidth
+              variant="outlined"
+              sx={{ mb: 2 }}
+              required
+            />
+            <TextField
+              label="Password"
+              type="password"
+              value={formData.password}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              fullWidth
+              variant="outlined"
+              sx={{ mb: 3 }}
+              required
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              color="primary"
+            >
+              Login
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+    </Box>
   );
 };
 

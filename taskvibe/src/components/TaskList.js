@@ -1,3 +1,5 @@
+
+// components/TaskList.js
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import TaskCard from './TaskCard';
@@ -19,7 +21,7 @@ const TaskList = ({ tasks, onUpdate, onDelete, onEdit, onReorder }) => {
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext items={tasks.map(task => task._id)} strategy={verticalListSortingStrategy}>
-        <Box sx={{ maxWidth: 800, mx: 'auto' }}>
+        <Box>
           {tasks.map((task) => (
             <TaskCard
               key={task._id}
