@@ -4,6 +4,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const authRoutes = require('./routes/auth');
 const taskRoutes = require('./routes/tasks');
+const chatbotRoutes = require('./routes/chatbot');
 const { setupChatbot } = require('./chatbot/nlp');
 
 dotenv.config();
