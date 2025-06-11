@@ -4,10 +4,18 @@ import { CSS } from '@dnd-kit/utilities';
 import { Card, CardContent, Typography, Button, TextField, MenuItem, Select, Box } from '@mui/material';
 import Confetti from 'react-confetti'; // Import Confetti
 
-const TaskCard = ({ task, onUpdate, onDelete, onEdit }) => {
+const TaskCard = ({ 
+  task, 
+  onUpdate, 
+  onDelete, 
+  onStartEdit, 
+  onCancelEdit, 
+  onSaveEdit, 
+  onEditChange, 
+  isEditing, 
+  editingTask 
+}) => {
   const [showConfetti, setShowConfetti] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editTask, setEditTask] = useState(task);
 
   const {
     attributes,
@@ -29,13 +37,20 @@ const TaskCard = ({ task, onUpdate, onDelete, onEdit }) => {
     setTimeout(() => setShowConfetti(false), 3000);
   };
 
-  const handleEdit = () => {
-    setIsEditing(true);
+  const handleEditClick = () => {
+    onStartEdit(task);
   };
 
-  const handleSave = async () => {
-    await onEdit(task._id, editTask);
-    setIsEditing(false);
+  const handleCancelClick = () => {
+    onCancelEdit();
+  };
+
+  const handleSaveClick = () => {
+    onSaveEdit();
+  };
+
+  const handleFieldChange = (field, value) => {
+    onEditChange({ ...editingTask, [field]: value });
   };
 
   return (
@@ -56,21 +71,21 @@ const TaskCard = ({ task, onUpdate, onDelete, onEdit }) => {
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               <TextField
                 label="Title"
-                value={editTask.title}
-                onChange={(e) => setEditTask({ ...editTask, title: e.target.value })}
+                value={editingTask.title}
+                onChange={(e) => handleFieldChange('title', e.target.value)}
                 fullWidth
               />
               <TextField
                 label="Description"
-                value={editTask.description || ''}
-                onChange={(e) => setEditTask({ ...editTask, description: e.target.value })}
+                value={editingTask.description || ''}
+                onChange={(e) => handleFieldChange('description', e.target.value)}
                 multiline
                 rows={3}
                 fullWidth
               />
               <Select
-                value={editTask.priority}
-                onChange={(e) => setEditTask({ ...editTask, priority: e.target.value })}
+                value={editingTask.priority}
+                onChange={(e) => handleFieldChange('priority', e.target.value)}
                 fullWidth
               >
                 <MenuItem value="low">Low</MenuItem>
@@ -78,10 +93,10 @@ const TaskCard = ({ task, onUpdate, onDelete, onEdit }) => {
                 <MenuItem value="high">High</MenuItem>
               </Select>
               <Box sx={{ display: 'flex', gap: 1 }}>
-                <Button variant="contained" color="success" onClick={handleSave}>
+                <Button variant="contained" color="success" onClick={handleSaveClick}>
                   Save
                 </Button>
-                <Button variant="outlined" onClick={() => setIsEditing(false)}>
+                <Button variant="outlined" onClick={handleCancelClick}>
                   Cancel
                 </Button>
               </Box>
@@ -109,7 +124,7 @@ const TaskCard = ({ task, onUpdate, onDelete, onEdit }) => {
                 >
                   Complete
                 </Button>
-                <Button variant="contained" color="warning" onClick={handleEdit}>
+                <Button variant="contained" color="warning" onClick={handleEditClick}>
                   Edit
                 </Button>
                 <Button

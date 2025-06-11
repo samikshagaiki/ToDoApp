@@ -1,23 +1,25 @@
-// pages/Tasks.js
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import TaskList from '../components/TaskList';
 import Chatbot from '../components/Chatbot';
-import { Box, Typography, TextField, Select, MenuItem, Button } from '@mui/material';
+import { Box, Typography, TextField, Select, MenuItem, Button, Alert } from '@mui/material';
 
 const Tasks = ({ user }) => {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState({ title: '', description: '', priority: 'medium' });
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/tasks', {
+        const res = await axios.get('/api/tasks', {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         });
         setTasks(res.data);
+        setError('');
       } catch (err) {
-        console.error(err);
+        setError(err.response?.data?.message || 'Failed to fetch tasks');
+        console.error('Fetch tasks error:', err);
       }
     };
     fetchTasks();
@@ -25,45 +27,40 @@ const Tasks = ({ user }) => {
 
   const addTask = async (task) => {
     try {
-      const res = await axios.post('http://localhost:5000/api/tasks', task, {
+      const res = await axios.post('/api/tasks', task, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       setTasks([...tasks, res.data]);
+      setError('');
     } catch (err) {
-      console.error(err);
+      setError(err.response?.data?.message || 'Failed to add task');
+      console.error('Add task error:', err);
     }
   };
 
   const updateTask = async (id, updatedTask) => {
     try {
-      const res = await axios.put(`http://localhost:5000/api/tasks/${id}`, updatedTask, {
+      const res = await axios.put(`/api/tasks/${id}`, updatedTask, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       setTasks(tasks.map(task => (task._id === id ? res.data : task)));
+      setError('');
     } catch (err) {
-      console.error(err);
+      setError(err.response?.data?.message || 'Failed to update task');
+      console.error('Update task error:', err);
     }
   };
 
   const deleteTask = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/tasks/${id}`, {
+      await axios.delete(`/api/tasks/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       setTasks(tasks.filter(task => task._id !== id));
+      setError('');
     } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const editTask = async (id, updatedTask) => {
-    try {
-      const res = await axios.put(`http://localhost:5000/api/tasks/${id}`, updatedTask, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      });
-      setTasks(tasks.map(task => (task._id === id ? res.data : task)));
-    } catch (err) {
-      console.error(err);
+      setError(err.response?.data?.message || 'Failed to delete task');
+      console.error('Delete task error:', err);
     }
   };
 
@@ -75,15 +72,26 @@ const Tasks = ({ user }) => {
       }));
       await Promise.all(
         updates.map(update =>
-          axios.put(`http://localhost:5000/api/tasks/${update.id}`, { order: update.order }, {
+          axios.put(`/api/tasks/${update.id}`, { order: update.order }, {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
           })
         )
       );
       setTasks(reorderedTasks);
+      setError('');
     } catch (err) {
-      console.error(err);
+      setError(err.response?.data?.message || 'Failed to reorder tasks');
+      console.error('Reorder tasks error:', err);
     }
+  };
+
+  const handleAddTask = () => {
+    if (!newTask.title.trim()) {
+      setError('Task title is required');
+      return;
+    }
+    addTask(newTask);
+    setNewTask({ title: '', description: '', priority: 'medium' });
   };
 
   return (
@@ -91,6 +99,11 @@ const Tasks = ({ user }) => {
       <Typography variant="h4" sx={{ mb: 4, color: 'white', fontWeight: 'bold', textAlign: 'center' }}>
         Your Tasks
       </Typography>
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
       <Box sx={{ display: 'flex', gap: 2, mb: 4, flexWrap: 'wrap' }}>
         <TextField
           label="Task Title"
@@ -123,12 +136,7 @@ const Tasks = ({ user }) => {
         <Button
           variant="contained"
           color="secondary"
-          onClick={() => {
-            if (newTask.title.trim()) {
-              addTask(newTask);
-              setNewTask({ title: '', description: '', priority: 'medium' });
-            }
-          }}
+          onClick={handleAddTask}
         >
           Add Task
         </Button>
@@ -137,7 +145,6 @@ const Tasks = ({ user }) => {
         tasks={tasks}
         onUpdate={updateTask}
         onDelete={deleteTask}
-        onEdit={editTask}
         onReorder={reorderTasks}
       />
       <Chatbot onAddTask={addTask} user={user} />
